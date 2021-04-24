@@ -1,16 +1,39 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <BaseHeader />
+  <main>
+    <component :is="(isAuth) ? 'Account' : 'Welcome'" />
+  </main>
+  <BaseFooter />
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import BaseHeader from "@/components/BaseHeader.vue";
+import BaseFooter from "@/components/BaseFooter.vue";
+import Welcome from "@/pages/Welcome.vue";
+import Account from "@/pages/Account.vue";
+import { mapActions } from 'vuex'
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    BaseHeader,
+    BaseFooter,
+    Welcome,
+    Account
   },
+  beforeMount() {
+    this.loginUser()
+  },
+  computed: {
+    isAuth() {
+      return localStorage.getItem('auth')
+    }
+  },
+  methods: {
+    ...mapActions({
+      loginUser: 'login/loginUser'
+    })
+  }
 };
 </script>
 
